@@ -15,8 +15,8 @@ class HeaderAccount extends Component {
     } else {
       return (
         <NavDropdown title="Account" id="basic-nav-dropdown">
-          <NavDropdown.Item href="#action/3.1">Log In</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.2">Register</NavDropdown.Item>
+          <NavDropdown.Item href="/login">Log In</NavDropdown.Item>
+          <NavDropdown.Item href="/register">Register</NavDropdown.Item>
         </NavDropdown>
       );
     }
