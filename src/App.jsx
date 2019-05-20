@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
-import LandingPage from "./views/LandingPage/LandingPage"
+import Home from "./views/Home/Home"
 import Header from "./components/Header/Header";
 
 class App extends React.Component {
@@ -15,7 +15,7 @@ class App extends React.Component {
           </Switch>
           <div style={{ minHeight: "660px" }}>
             <Switch>
-              <Route exact path="/" component={LandingPage} />
+              <Route exact path="/" component={Home} />
               {/* <Route path="/dashboard" component={Dashboard} />
               <Route path="/about" component={About} />
               <Route path="/login" component={Login} />

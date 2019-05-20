@@ -1,0 +1,68 @@
+.homepage-banner {
+  background: url("../../assets/images/blue-close-up-concrete.jpg");
+  background-size: cover;
+  min-height: 730px;
+}
+
+.row {
+  margin: 0;
+}
+
+.row-border {
+  border-right: solid 1.5px lightgray;
+}
+
+.card-mini {
+  border-color: gray;
+}
+
+.card-standard {
+  border-color: gray;
+}
+
+.card-premium {
+  border-color: gray;
+}
+
+.heading-mini {
+  color: #17a2b8;
+}
+
+.heading-standard {
+  color: #007bff;
+}
+
+.heading-premium {
+  color: #28a745;
+}
+
+.card-border {
+  border-top: solid 1px lightgray;
+  padding-top: 30px;
+}
+
+.pricing-plans {
+  background-color: seashell;
+}
+
+.navbar {
+  width: 100%;
+  padding: 5px;
+  position: fixed;
+  top: 0;
+  transition: top 0.1s;
+  background-color: #50808e;
+}
+
+.navbar-top {
+  background-color: transparent;
+  top: 30px;
+}
+
+.navbar * {
+  color: white;
+}
+
+.navbar-top * {
+  color: #50808e;
+}
