@@ -1,10 +1,10 @@
 import React from "react";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
-import Home from "./views/Home/Home"
+import Home from "./views/Home/Home";
 import Header from "./components/Header/Header";
-import Register from "./components/Register/Register"
-import Login from "./components/Login/Login"
+import Register from "./components/Register/Register";
+import Login from "./components/Login/Login";
 
 class App extends React.Component {
   render() {
