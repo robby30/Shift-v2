@@ -20,6 +20,7 @@ class Header extends React.Component {
           </Navbar.Brand>
           <Nav className="ml-auto">
             <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
             <Nav.Link href="#about">About</Nav.Link>
             <HeaderAccount authid={false} />
           </Nav>
