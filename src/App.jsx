@@ -6,6 +6,8 @@ import Header from "./components/Header/Header";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
 
+import Dashboard from "./components/Dashboard/Dashboard";
+
 class App extends React.Component {
   render() {
     return (
@@ -22,6 +24,7 @@ class App extends React.Component {
               <Route exact path="/" component={Home} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/dashboard" component={Dashboard} />
               {/* <Route path="/dashboard" component={Dashboard} />
               <Route path="/about" component={About} />
               <Route path="/login" component={Login} />
