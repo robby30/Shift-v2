@@ -9,10 +9,7 @@ class HeaderDashboard extends React.Component {
     this.refs.sidebarToggle.classList.toggle("toggled");
   }
 
-  componentDidMount(e) {
-    document.documentElement.classList.toggle("nav-open");
-    this.refs.sidebarToggle.classList.toggle("toggled");
-  }
+  componentDidMount(e) {}
 
   render() {
     return (
