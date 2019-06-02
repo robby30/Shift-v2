@@ -1,0 +1,50 @@
+.dashboard-header {
+  margin-bottom: 30px;
+  border-bottom: solid 1px lightgray;
+}
+
+.dashboard-header > a {
+  color: #50808e;
+}
+
+.dashboard-header > a:hover {
+  color: #50808e;
+}
+
+.nav-open .sidebar {
+  -webkit-transform: translate3d(0px, 0, 0);
+  transform: translate3d(0px, 0, 0);
+}
+
+.sidebar,
+.bootstrap-navbar {
+  position: fixed;
+  display: block;
+  top: 0;
+  height: 100%;
+  width: 260px;
+  right: auto;
+  left: 0;
+  z-index: 1032;
+  visibility: visible;
+  overflow-y: visible;
+  padding: 0;
+  -webkit-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+  transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+  -webkit-transform: translate3d(-260px, 0, 0);
+  transform: translate3d(-260px, 0, 0);
+}
+
+.nav-open .main-panel {
+  right: 0;
+  -webkit-transform: translate3d(260px, 0, 0);
+  transform: translate3d(260px, 0, 0);
+}
+.main-panel {
+  width: 100%;
+}
+
+.container,
+.dashboard-header {
+  margin: 0 !important;
+}
