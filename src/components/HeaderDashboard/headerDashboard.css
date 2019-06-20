@@ -17,7 +17,15 @@
   transform: translate3d(260px, 0, 0);
 }
 
-.container,
 .dashboard-header {
   margin: 0 !important;
+}
+
+@media screen and (min-width: 991px) {
+  .navbar-toggler {
+    display: none;
+  }
+  .nav-open .main-panel {
+    width: 100%;
+  }
 }

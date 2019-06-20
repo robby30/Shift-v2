@@ -1,7 +1,9 @@
 import React from "react";
-import { Navbar, Nav, Container, NavbarBrand } from "react-bootstrap";
+import { Navbar, Nav, Container, NavbarBrand, Row } from "react-bootstrap";
 import HeaderAccount from "../HeaderAccount/HeaderAccount";
 import "./headerDashboard.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 class HeaderDashboard extends React.Component {
   openSidebar() {
@@ -13,17 +15,18 @@ class HeaderDashboard extends React.Component {
 
   render() {
     return (
-      <Container className="dashboard-header">
+      <Row className="dashboard-header">
         <button
+          expand="lg"
           type="button"
           ref="sidebarToggle"
           className="navbar-toggler"
           onClick={() => this.openSidebar()}
         >
-          button
+          <FontAwesomeIcon icon={faBars} />
         </button>
         <NavbarBrand href="/dashboard">Dashboard</NavbarBrand>
-      </Container>
+      </Row>
     );
   }
 }

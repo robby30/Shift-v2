@@ -1,16 +1,15 @@
-import React, {Component} from "react";
-import { Container, Row, Col, CardDeck, Card, Button } from "react-bootstrap"
-import "./Home.css"
+import React, { Component } from "react";
+import { Container, Row, Col, CardDeck, Card, Button } from "react-bootstrap";
+import "./Home.css";
 
 class Home extends Component {
-
   render() {
     return (
       <div>
         <Row className="homepage-banner">
           <Container>
             <Row className="h-100">
-              <Col sm={{span:"6", offset:"2"}} className="my-auto">
+              <Col sm={{ span: "6", offset: "2" }} className="my-auto">
                 <h1>Shift your priorities</h1>
                 <p className="lead">We need a background image behind here</p>
               </Col>
@@ -18,7 +17,11 @@ class Home extends Component {
           </Container>
         </Row>
         <Row className="my-5">
-          <Col md={{span:"4", offset:"2"}} text-center className="row-border">
+          <Col
+            md={{ span: "4", offset: "2" }}
+            text-center
+            className="row-border"
+          >
             <h4>Interested to join?</h4>
             <p>
               Sunset is the time of day when our sky meets the outer space solar
@@ -114,7 +117,9 @@ class Home extends Component {
                     />{" "}
                     Some more text to increase the height
                   </Card.Text>
-                  <Card.Text className="heading-standard">Read more...</Card.Text>
+                  <Card.Text className="heading-standard">
+                    Read more...
+                  </Card.Text>
                 </Card.Body>
               </Card>
               <Card className="card-premium">
@@ -159,7 +164,9 @@ class Home extends Component {
                     />{" "}
                     Some more text to increase the height
                   </Card.Text>
-                  <Card.Text className="heading-premium">Read more...</Card.Text>
+                  <Card.Text className="heading-premium">
+                    Read more...
+                  </Card.Text>
                 </Card.Body>
               </Card>
             </CardDeck>
@@ -168,7 +175,6 @@ class Home extends Component {
       </div>
     );
   }
-
 }
 
 export default Home;
