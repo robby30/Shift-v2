@@ -18,7 +18,7 @@ class Home extends Component {
           </Container>
         </Row>
         <Row className="my-5">
-          <Col md={{span:"4", offset:"2"}} text-center className="row-border">
+          <Col md={{span:"4", offset:"2"}} text-center="true" className="row-border">
             <h4>Interested to join?</h4>
             <p>
               Sunset is the time of day when our sky meets the outer space solar
@@ -26,7 +26,7 @@ class Home extends Component {
               twisting, like clouds of balloons caught in a whirlwind.
             </p>
           </Col>
-          <Col md="4" text-center>
+          <Col md="4" text-center="true">
             <h4>Hello World</h4>
             <p>
               The sun moves slowly to hide behind the line of horizon, while the
@@ -49,7 +49,7 @@ class Home extends Component {
           <Container className="my-5">
             <CardDeck>
               <Card className="card-mini">
-                <Card.Body text-center>
+                <Card.Body text-center="true">
                   <h4 className="heading-mini">Mini Plan</h4>
                   <p className="text-muted">$15 / Month.</p>
                   <Button variant="info" className="mb-4">
@@ -80,7 +80,7 @@ class Home extends Component {
                 </Card.Body>
               </Card>
               <Card className="card-standard">
-                <Card.Body text-center>
+                <Card.Body text-center="true">
                   <h4 className="heading-standard">Standard Plan</h4>
                   <p className="text-muted">$25 / Month.</p>
                   <Button variant="primary" className="mb-4">

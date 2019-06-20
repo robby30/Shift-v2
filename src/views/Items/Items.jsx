@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
-import Redirect from "react-router-dom/Redirect";
+import { Redirect } from "react-router-dom";
 
 class Register extends Component {
   constructor(props) {
