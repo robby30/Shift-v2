@@ -9,26 +9,37 @@ import DashboardView from "../../views/Dashboard/Dashboard.jsx";
 import Header from "../HeaderDashboard/HeaderDashboard";
 import MenuView from "../../views/Menu/Menu.jsx";
 import ItemsView from "../../views/Items/Items.jsx";
+import { connect } from "react-redux";
 
 class Dashboard extends React.Component {
   state = {};
 
   render() {
-    return (
-      <div className="wrapper">
-        <Sidebar {...this.props} />
-        <div className="main-panel" ref="mainPanel">
-          <Header />
-          <Switch>
-            <Route path="/dashboard/typography" component={TypographyView} />
-            <Route path="/dashboard/menu/list" component={MenuView} />
-            <Route path="/dashboard/menu/items" component={ItemsView} />
-            <Route path="/dashboard" component={DashboardView} />
-          </Switch>
+    const { isLoaded } = this.props;
+    if (isLoaded) {
+      return (
+        <div className="wrapper">
+          <Sidebar {...this.props} />
+          <div className="main-panel" ref="mainPanel">
+            <Header />
+            <Switch>
+              <Route path="/dashboard/typography" component={TypographyView} />
+              <Route path="/dashboard/menu/list" component={MenuView} />
+              <Route path="/dashboard/menu/items" component={ItemsView} />
+              <Route path="/dashboard" component={DashboardView} />
+            </Switch>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+    return <div className="wrapper" />;
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => {
+  return {
+    isLoaded: state.firebase.auth.isLoaded
+  };
+};
+
+export default connect(mapStateToProps)(Dashboard);

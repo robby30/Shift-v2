@@ -5,19 +5,23 @@ import { compose } from "redux";
 
 class Dashboard extends Component {
   render() {
+    const { name } = this.props;
     return (
       <div>
-        <h1>Dashboard</h1>
+        <h1>{name}</h1>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log(state);
+  const id = state.firebase.auth.uid;
   return {
-    firestore: state.firestore
+    name: state.firestore.data.company && state.firestore.data.company[id].name
   };
 };
 
-export default compose(connect(mapStateToProps))(Dashboard);
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([{ collection: "company" }])
+)(Dashboard);

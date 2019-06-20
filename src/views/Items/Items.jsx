@@ -1,28 +1,40 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { signUp } from "../../actions/action";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
-import { Redirect } from "react-router-dom";
+import { addMenuItem, formReset } from "../../actions/menuActions";
 
-class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      Name: "",
-      Price: "",
-      Category: "",
-      File: ""
-    };
-  }
+class Items extends Component {
+  state = {
+    name: "",
+    price: "",
+    category: "",
+    file: ""
+  };
 
-  handleSignup = e => {
-    this.props.signUp(this.state);
+  handleSubmit = e => {
+    this.props.addMenuItem(this.state, this.props.uid);
+  };
+
+  handleChange = e => {
+    this.setState({
+      [e.target.id]: e.target.value
+    });
   };
 
   render() {
+    const { addMenu } = this.props;
+    if (addMenu) {
+      this.setState({
+        name: "",
+        price: "",
+        category: "",
+        file: ""
+      });
+      this.props.resetForm();
+    }
     return (
       <Col xs="10" className="mx-auto my-5">
         <Form>
@@ -31,8 +43,10 @@ class Register extends Component {
               <Form.Group>
                 <Form.Label>Name</Form.Label>
                 <Form.Control
-                  onChange={e => this.setState({ Name: e.target.value })}
+                  id="name"
+                  onChange={this.handleChange}
                   type="text"
+                  value={this.state.name}
                   placeholder="Enter Item Name"
                 />
               </Form.Group>
@@ -40,8 +54,10 @@ class Register extends Component {
               <Form.Group>
                 <Form.Label>Price</Form.Label>
                 <Form.Control
-                  onChange={e => this.setState({ Price: e.target.value })}
+                  id="price"
+                  onChange={this.handleChange}
                   type="number"
+                  value={this.state.price}
                   placeholder="Enter Price"
                 />
                 <Form.Text id="emailHelp" className="text-muted">
@@ -52,11 +68,7 @@ class Register extends Component {
             <Col xs="5">
               <Form.Group>
                 <Form.Label>Image</Form.Label>
-                <Form.Control
-                  onChange={e => this.setState({ Category: e.target.files })}
-                  type="file"
-                  placeholder="Insert Image"
-                />
+                <Form.Control type="file" placeholder="Insert Image" />
               </Form.Group>
             </Col>
           </Row>
@@ -64,13 +76,15 @@ class Register extends Component {
           <Form.Group>
             <Form.Label>Category</Form.Label>
             <Form.Control
-              onChange={e => this.setState({ Category: e.target.value })}
+              id="category"
+              onChange={this.handleChange}
               type="text"
+              value={this.state.category}
               placeholder="Enter Category"
             />
           </Form.Group>
 
-          <Button variant="success" onClick={this.handleSignup}>
+          <Button variant="success" onClick={this.handleSubmit}>
             Submit
           </Button>
         </Form>
@@ -81,17 +95,19 @@ class Register extends Component {
 
 const mapStateToProps = state => {
   return {
-    auth: state.firebase.auth
+    uid: state.firebase.auth.uid,
+    addMenu: state.menu.addMenu
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    signUp: creds => dispatch(signUp(creds))
+    addMenuItem: (menu, uid) => dispatch(addMenuItem(menu, uid)),
+    resetForm: () => dispatch(formReset())
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Register);
+)(Items);

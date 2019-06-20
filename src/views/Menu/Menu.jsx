@@ -8,9 +8,14 @@ import {
   Row,
   Col
 } from "reactstrap";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
-class RegularTables extends React.Component {
+class MenuList extends React.Component {
   render() {
+    const { menuList } = this.props;
+    console.log(menuList);
     return (
       <div className="content">
         <Row>
@@ -29,16 +34,16 @@ class RegularTables extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Nasi Goreng Kunyit</td>
-                      <td>$15</td>
-                      <td>Nasi Goreng</td>
-                    </tr>
-                    <tr>
-                      <td>Nasi Goreng Kicap</td>
-                      <td>$15</td>
-                      <td>Nasi Goreng</td>
-                    </tr>
+                    {menuList &&
+                      menuList.map(menu => {
+                        return (
+                          <tr key={menu.id}>
+                            <td>{menu.name}</td>
+                            <td>${menu.price}</td>
+                            <td>{menu.category}</td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </Table>
               </CardBody>
@@ -50,4 +55,26 @@ class RegularTables extends React.Component {
   }
 }
 
-export default RegularTables;
+const mapStateToProps = state => {
+  const id = state.firebase.auth.uid;
+  return {
+    menuList:
+      state.firestore.ordered.company &&
+      state.firestore.ordered.company[0].menu,
+    id
+  };
+};
+
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect(props => {
+    console.log(props);
+    return [
+      {
+        collection: "company",
+        doc: props.id,
+        subcollections: [{ collection: "menu" }]
+      }
+    ];
+  })
+)(MenuList);
