@@ -1,20 +1,10 @@
 import { combineReducers } from "redux";
 import { firebaseReducer } from "react-redux-firebase";
-
-const projectReducer = (state = {}, action) => {
-  switch (action.type) {
-    case "SIGNUP_SUCCESS":
-      console.log("signup success");
-      return {
-        ...state,
-        authError: null
-      };
-    default:
-      return state;
-  }
-};
+import { firestoreReducer } from 'redux-firestore';
+import projectReducer from './projectReducer';
 
 const rootReducer = combineReducers({
+  firestore: firestoreReducer,
   firebase: firebaseReducer,
   project: projectReducer
 });

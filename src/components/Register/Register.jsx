@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signUp } from "../../actions/action";
+
 import { Card, Col, Form, Button } from "react-bootstrap";
-import Redirect from "react-router-dom/Redirect";
+import { Redirect } from "react-router-dom";
 
 class Register extends Component {
   constructor(props) {
