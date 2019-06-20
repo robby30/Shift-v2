@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { firestoreConnect } from "react-redux-firebase";
+import { connect } from "react-redux";
+import { compose } from "redux";
 
 class Dashboard extends Component {
   render() {
@@ -10,4 +13,11 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    firestore: state.firestore
+  };
+};
+
+export default compose(connect(mapStateToProps))(Dashboard);

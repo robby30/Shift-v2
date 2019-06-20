@@ -11,10 +11,7 @@ import MenuView from "../../views/Menu/Menu.jsx";
 import ItemsView from "../../views/Items/Items.jsx";
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+  state = {};
 
   render() {
     return (

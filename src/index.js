@@ -14,6 +14,8 @@ import configureStore from "./store.js";
 import "bootstrap/dist/css/bootstrap.css";
 import "./index.css";
 
+import Dashboard from "./components/Dashboard/Dashboard";
+
 const hist = createBrowserHistory();
 const store = configureStore();
 
@@ -21,6 +23,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={hist}>
       <Switch>
+        <Route path="/dashboard" component={Dashboard} />
         <Route path="/" component={App} />
       </Switch>
     </Router>

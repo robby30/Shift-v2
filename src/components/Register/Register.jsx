@@ -6,20 +6,24 @@ import { Card, Col, Form, Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 
 class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      companyName: "",
-      email: "",
-      password: ""
-    };
-  }
+  state = {
+    name: "",
+    email: "",
+    password: ""
+  };
 
   handleSignup = e => {
     this.props.signUp(this.state);
   };
 
+  handleChange = e => {
+    this.setState({
+      [e.target.id]: e.target.value
+    });
+  };
+
   render() {
+    console.log(this.props.project);
     const { auth } = this.props;
     if (auth.uid) return <Redirect to="/" />;
     return (
@@ -29,7 +33,8 @@ class Register extends Component {
             <Form.Group>
               <Form.Label>Company Name</Form.Label>
               <Form.Control
-                onChange={e => this.setState({ companyName: e.target.value })}
+                id="name"
+                onChange={this.handleChange}
                 type="text"
                 placeholder="Enter Company"
               />
@@ -38,7 +43,8 @@ class Register extends Component {
             <Form.Group>
               <Form.Label>Email address</Form.Label>
               <Form.Control
-                onChange={e => this.setState({ email: e.target.value })}
+                id="email"
+                onChange={this.handleChange}
                 type="email"
                 placeholder="Enter Email"
               />
@@ -50,7 +56,8 @@ class Register extends Component {
             <Form.Group>
               <Form.Label>Password</Form.Label>
               <Form.Control
-                onChange={e => this.setState({ password: e.target.value })}
+                id="password"
+                onChange={this.handleChange}
                 type="password"
                 placeholder="Password"
               />
@@ -67,7 +74,8 @@ class Register extends Component {
 
 const mapStateToProps = state => {
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    project: state.project
   };
 };
 

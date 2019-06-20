@@ -23,8 +23,6 @@ class Register extends Component {
   };
 
   render() {
-    const { auth } = this.props;
-    if (auth.uid) return <Redirect to="/" />;
     return (
       <Col xs="10" className="mx-auto my-5">
         <Form>

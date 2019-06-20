@@ -12,45 +12,33 @@ import { connect } from "react-redux";
 
 class App extends React.Component {
   render() {
-    const { loaded } = this.props;
-    if (loaded) {
+    const { isLoaded } = this.props.auth;
+    if (isLoaded) {
       return (
         <div id="page-container">
           <div id="content-wrap" />
           <div className="App">
-            <Switch>
-              <Route exact path="/" component={Header} />
-              <Route path="/register" component={Header} />
-              <Route path="/login" component={Header} />
-            </Switch>
+            <Header />
             <div style={{ minHeight: "660px" }}>
               <Switch>
                 <Route path="/register" component={Register} />
                 <Route path="/login" component={Login} />
-                <Route path="/dashboard" component={Dashboard} />
                 <Route path="/" component={Home} />
-                {/* <Route path="/dashboard" component={Dashboard} />
-                <Route path="/about" component={About} />
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} /> */}
               </Switch>
             </div>
           </div>
         </div>
       );
     } else {
-      return (
-        <div id="page-container">
-        </div>
-      )
+      return <div id="page-container" />;
     }
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    loaded: state.firebase.auth.isLoaded
-  }
-}
+    auth: state.firebase.auth
+  };
+};
 
 export default connect(mapStateToProps)(App);
