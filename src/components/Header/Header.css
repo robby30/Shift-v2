@@ -42,3 +42,7 @@ nav.navbar-dashboard * {
 nav.navbar-dashboard-top * {
   color: white;
 }
+
+.dashboard-header {
+  height: 5%;
+}

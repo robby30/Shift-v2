@@ -11,7 +11,7 @@ import {
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-
+import "./Menu.css";
 class MenuList extends React.Component {
   render() {
     const { menuList } = this.props;
@@ -19,15 +19,25 @@ class MenuList extends React.Component {
     return (
       <div className="content">
         <Row>
-          <Col xs={10} sm={10} className="mx-auto">
-            <Card>
+          <Col xs={11} sm={11} className="mx-auto my-4">
+            <h4>Menu</h4>
+            <Card className="menu-table">
               <CardHeader>
-                <CardTitle tag="h4">Menu List</CardTitle>
+                {/* <ul className="category-selector">
+                  <li>
+                    <span>All</span>
+                  </li>
+                  <li>test</li>
+                </ul> */}
+                <ul className="category-selector">
+                  <li>All</li>
+                  <li>Cat1</li>
+                </ul>
               </CardHeader>
-              <CardBody>
+              <CardBody className="menu-table-body">
                 <Table responsive>
                   <thead className="text-primary">
-                    <tr>
+                    <tr className="menu-table-heading">
                       <th>Name</th>
                       <th>Price</th>
                       <th>Category</th>

@@ -3,6 +3,7 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 import Logo from "../../assets/images/logo.svg";
 import HeaderAccount from "../HeaderAccount/HeaderAccount";
 import { connect } from "react-redux";
+import "./Header.css";
 
 class Header extends React.Component {
   render() {

@@ -10,7 +10,7 @@ import Header from "../HeaderDashboard/HeaderDashboard";
 import MenuView from "../../views/Menu/Menu.jsx";
 import ItemsView from "../../views/Items/Items.jsx";
 import { connect } from "react-redux";
-
+import "./dashboard.css";
 class Dashboard extends React.Component {
   state = {};
 
@@ -22,12 +22,17 @@ class Dashboard extends React.Component {
           <Sidebar {...this.props} />
           <div className="main-panel" ref="mainPanel">
             <Header />
-            <Switch>
-              <Route path="/dashboard/typography" component={TypographyView} />
-              <Route path="/dashboard/menu/list" component={MenuView} />
-              <Route path="/dashboard/menu/items" component={ItemsView} />
-              <Route path="/dashboard" component={DashboardView} />
-            </Switch>
+            <div className="dashboard-content">
+              <Switch>
+                <Route
+                  path="/dashboard/typography"
+                  component={TypographyView}
+                />
+                <Route path="/dashboard/menu/list" component={MenuView} />
+                <Route path="/dashboard/menu/items" component={ItemsView} />
+                <Route path="/dashboard" component={DashboardView} />
+              </Switch>
+            </div>
           </div>
         </div>
       );
