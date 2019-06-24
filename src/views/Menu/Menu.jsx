@@ -96,7 +96,11 @@ class MenuList extends React.Component {
                 <div className="input-group mt-3 mb-3">
                   <div className="input-group-prepend">
                     <Dropdown>
-                      <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      <Dropdown.Toggle
+                        variant="success"
+                        id="dropdown-basic"
+                        className="search-button-right"
+                      >
                         Filter
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
