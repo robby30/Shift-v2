@@ -78,7 +78,7 @@ class MenuList extends React.Component {
               <div>
                 <h4>Menu</h4>
               </div>
-              <div class="ml-auto">
+              <div className="ml-auto">
                 <Button color="dark">
                   <NavLink
                     to="/dashboard/menu/items"

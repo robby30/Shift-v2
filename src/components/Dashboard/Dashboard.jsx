@@ -24,7 +24,7 @@ class Dashboard extends React.Component {
           <Sidebar {...this.props} />
           <div className="main-panel" ref="mainPanel">
             <Header />
-            <div className="dashboard-content">
+            <div className="dashboard-content ">
               <Switch>
                 <Route
                   path="/dashboard/typography"

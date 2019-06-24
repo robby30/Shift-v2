@@ -15,7 +15,26 @@ import configureStore from "./store.js";
 // new imports stop
 
 import Dashboard from "./components/Dashboard/Dashboard";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faAddressCard,
+  faBookOpen,
+  faUtensils,
+  faBell,
+  faBars,
+  faCog,
+  faUsersCog
+} from "@fortawesome/free-solid-svg-icons";
 
+library.add(
+  faUtensils,
+  faAddressCard,
+  faBookOpen,
+  faBell,
+  faBars,
+  faCog,
+  faUsersCog
+);
 const hist = createBrowserHistory();
 const store = configureStore();
 

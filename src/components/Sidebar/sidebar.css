@@ -12,7 +12,7 @@
 }
 
 .sidebar a {
-  color: #efefef;
+  color: aliceblue;
 }
 .sidebar a:hover {
   color: white;
@@ -43,8 +43,22 @@
 
 .sidebar p {
   margin-bottom: 0;
+  font-size: 19px;
+}
+.sub-items p {
+  font-size: 16px;
+  opacity: 0.6;
+}
+a.sub-items {
+  padding: 5px;
+}
+.sub-list li {
+  list-style-type: none;
 }
 
+.sub-list {
+  padding-left: 20px;
+}
 .sidebar-wrapper {
   position: relative;
   height: calc(100vh - 75px);
@@ -90,4 +104,10 @@
     -webkit-transform: translate3d(0px, 0, 0);
     transform: translate3d(0px, 0, 0);
   }
+}
+.sidebar-icon {
+  font-size: 30px;
+  color: aliceblue;
+  display: block;
+  margin: auto;
 }

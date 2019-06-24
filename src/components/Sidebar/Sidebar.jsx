@@ -1,7 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Nav } from "reactstrap";
+import { Nav, Row, Col } from "reactstrap";
 import logo from "../../assets/images/logo.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./sidebar.css";
 
 class Sidebar extends React.Component {
@@ -28,57 +29,99 @@ class Sidebar extends React.Component {
           </a>
         </div>
         <div className="sidebar-wrapper" ref="sidebar">
-          <Nav vertical>
-            <li className={this.activeRoute("/dashboard")}>
-              <NavLink
-                to="/dashboard"
-                className="nav-link"
-                activeClassName="active"
-              >
-                <p>Dashboard</p>
-              </NavLink>
-            </li>
-            <li className={this.activeRoute("/menu")}>
-              <NavLink
-                to="/dashboard/menu/list"
-                className="nav-link"
-                activeClassName="active"
-              >
-                <p>Menu</p>
-              </NavLink>
-              <div>
-                <ul>
-                  <li>
-                    <NavLink
-                      to="/dashboard/menu/list"
-                      className="nav-link"
-                      activeClassName="active"
-                    >
-                      <p>Menu List</p>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/dashboard/menu/items"
-                      className="nav-link"
-                      activeClassName="active"
-                    >
-                      <p>Items</p>
-                    </NavLink>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li className={this.activeRoute("/typography")}>
-              <NavLink
-                to="/dashboard/typography"
-                className="nav-link"
-                activeClassName="active"
-              >
-                <p>Typography</p>
-              </NavLink>
-            </li>
-          </Nav>
+          <Row>
+            <Col sm={4} className="mr-0 pr-0">
+              <Nav vertical>
+                <li className={this.activeRoute("/dashboard")}>
+                  <NavLink
+                    to="/dashboard"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <FontAwesomeIcon
+                      icon="address-card"
+                      className="sidebar-icon"
+                    />
+                  </NavLink>
+                </li>
+                <li className={this.activeRoute("/menu")}>
+                  <NavLink
+                    to="/dashboard/menu/list"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <FontAwesomeIcon
+                      icon="book-open"
+                      className="sidebar-icon"
+                    />
+                  </NavLink>
+                </li>
+
+                {/* <li>
+                  <NavLink
+                    to="/dashboard/menu/items"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <FontAwesomeIcon icon="utensils" className="sidebar-icon" />
+                  </NavLink>
+                </li> */}
+              </Nav>
+            </Col>
+            <Col sm={8} className="ml-0 pl-0">
+              <Nav vertical>
+                <li className={this.activeRoute("/dashboard")}>
+                  <NavLink
+                    to="/dashboard"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <p>Dashboard</p>
+                  </NavLink>
+                </li>
+                <li className={this.activeRoute("/menu")}>
+                  <NavLink
+                    to="/dashboard/menu/list"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <p>Menu</p>
+                  </NavLink>
+                  <div>
+                    <ul className="sub-list">
+                      <li>
+                        <NavLink
+                          to="/dashboard/menu/list"
+                          className="nav-link sub-items"
+                          activeClassName="active"
+                        >
+                          <p>Menu List</p>
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/dashboard/menu/items"
+                          className="nav-link sub-items"
+                          activeClassName="active"
+                        >
+                          <p>Items</p>
+                        </NavLink>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li className={this.activeRoute("/typography")}>
+                  <NavLink
+                    to="/dashboard/typography"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <p>Typography</p>
+                  </NavLink>
+                </li>
+              </Nav>
+            </Col>
+          </Row>
         </div>
       </div>
     );
