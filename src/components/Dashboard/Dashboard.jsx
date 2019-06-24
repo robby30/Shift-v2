@@ -10,6 +10,8 @@ import Header from "../HeaderDashboard/HeaderDashboard";
 import MenuView from "../../views/Menu/Menu.jsx";
 import ItemsView from "../../views/Items/Items.jsx";
 import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 import "./dashboard.css";
 class Dashboard extends React.Component {
   state = {};
@@ -30,7 +32,12 @@ class Dashboard extends React.Component {
                 />
                 <Route path="/dashboard/menu/list" component={MenuView} />
                 <Route path="/dashboard/menu/items" component={ItemsView} />
-                <Route path="/dashboard" component={DashboardView} />
+                <Route
+                  path="/dashboard"
+                  render={props => (
+                    <DashboardView {...props} data={this.props.name} />
+                  )}
+                />
               </Switch>
             </div>
           </div>
@@ -42,9 +49,14 @@ class Dashboard extends React.Component {
 }
 
 const mapStateToProps = state => {
+  const id = state.firebase.auth.uid;
   return {
-    isLoaded: state.firebase.auth.isLoaded
+    isLoaded: state.firebase.auth.isLoaded,
+    name: state.firestore.data.company && state.firestore.data.company[id].name
   };
 };
 
-export default connect(mapStateToProps)(Dashboard);
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([{ collection: "company" }])
+)(Dashboard);

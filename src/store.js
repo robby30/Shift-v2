@@ -10,7 +10,14 @@ function configureStore(state = {}) {
     rootReducer,
     compose(
       applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
-      reactReduxFirebase(fbConfig /*, {userProfile: 'users', useFirestoreForProfile: true, attachAuthIsReady: true} */),
+      reactReduxFirebase(
+        fbConfig,
+        {
+          userProfile: "users",
+          useFirestoreForProfile: true,
+          attachAuthIsReady: true
+        } /*, {userProfile: 'users', useFirestoreForProfile: true, attachAuthIsReady: true} */
+      ),
       reduxFirestore(fbConfig)
     )
   );
