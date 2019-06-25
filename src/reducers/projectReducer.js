@@ -13,7 +13,7 @@ const projectReducer = (state = initState, action) => {
       return {
         ...state,
         authError: action.err
-      };
+      }
     default:
       return state;
   }

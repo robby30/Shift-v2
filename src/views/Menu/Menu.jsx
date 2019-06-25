@@ -1,24 +1,14 @@
 import React from "react";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Table,
-  Row,
-  Col,
-  Button
-} from "reactstrap";
+import { Card, CardBody, CardHeader, CardTitle, Table, Row, Col, Button } from "reactstrap";
 import { Dropdown } from "react-bootstrap";
 import { connect } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
-import { compose } from "redux";
 import { NavLink } from "react-router-dom";
 import "./Menu.css";
 class MenuList extends React.Component {
 
   state = {
-    search: ""
+    search: "",
+    categoryFilter: null
   };
 
   flag = 0;
@@ -65,8 +55,22 @@ class MenuList extends React.Component {
     });
   };
   
+  filterByCategory = menu => {
+    console.log(this.state.categoryFilter)
+    if (this.state.categoryFilter) {
+      return menu.category === this.state.categoryFilter
+    } else {
+      return menu
+    }
+  }
+
+  changeCategoryFilter = category => {
+    // console.log(category)
+    this.setState({categoryFilter: category})
+  }
+
   render() {
-    const { menuList } = this.props;
+    const { menuList, categoryList } = this.props;
 
     let filteredMenu = menuList && [...menuList];
     //this.setState({ sortedMenu: filteredMenu });
@@ -99,9 +103,10 @@ class MenuList extends React.Component {
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {/* map all category */}
-                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                        <Dropdown.Item onClick={() => this.changeCategoryFilter(null)}>All</Dropdown.Item>
+                        { categoryList && categoryList.map((category, index) => {
+                          return (<Dropdown.Item key={index} onClick={() => this.changeCategoryFilter(category.name)}>{category.name}</Dropdown.Item>)
+                        })}
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>
@@ -121,7 +126,7 @@ class MenuList extends React.Component {
                   </thead>
                   <tbody>
                     {filteredMenu &&
-                      filteredMenu.filter(this.filterMenu).map(menu => {
+                      filteredMenu.filter(this.filterByCategory).filter(this.filterMenu).map(menu => {
                         return (
                           <tr key={menu.id}>
                             <td>

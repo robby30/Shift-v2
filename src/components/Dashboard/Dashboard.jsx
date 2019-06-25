@@ -29,7 +29,7 @@ class Dashboard extends React.Component {
                 <Route path="/dashboard/typography" component={TypographyView} />
                 <Route 
                   path="/dashboard/menu/list" 
-                  render={props => <MenuView {...props} menuList={ menu } />}
+                  render={props => <MenuView {...props} menuList={ menu } categoryList={ category }/>}
                 />
                 <Route 
                   path="/dashboard/menu/items" 
@@ -57,7 +57,7 @@ const mapStateToProps = state => {
     id: auth.uid,
     name: store.company && store.company[0].name,
     menu: store.company && store.company[0].menu,
-    category: store.company && store.company[0].category,
+    category: store.company && store.company[0].category
   };
 };
 
