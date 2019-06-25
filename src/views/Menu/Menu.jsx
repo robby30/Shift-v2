@@ -8,7 +8,8 @@ class MenuList extends React.Component {
 
   state = {
     search: "",
-    categoryFilter: null
+    categoryFilter: null,
+    sortBy: null
   };
 
   flag = 0;
@@ -56,7 +57,6 @@ class MenuList extends React.Component {
   };
   
   filterByCategory = menu => {
-    console.log(this.state.categoryFilter)
     if (this.state.categoryFilter) {
       return menu.category === this.state.categoryFilter
     } else {
@@ -65,9 +65,32 @@ class MenuList extends React.Component {
   }
 
   changeCategoryFilter = category => {
-    // console.log(category)
-    this.setState({categoryFilter: category})
+    this.setState({
+      categoryFilter: category
+    })
   }
+
+  sortBy = (a, b) => {
+    if (this.state.sortBy === 'category') {
+      if (a.category < b.category) return -1;
+      if (a.category > b.category) return 1;
+      return 0;
+    } else if (this.state.sortBy === 'price') {
+      if (parseFloat(a.price) < parseFloat(b.price)) return -1;
+      if (parseFloat(a.price) > parseFloat(b.price)) return 1;
+      return 0;
+    } else {
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+    }
+  }
+
+  changeSort = e => {
+    this.setState({
+      sortBy: e.target.id
+    });
+  } 
 
   render() {
     const { menuList, categoryList } = this.props;
@@ -119,14 +142,14 @@ class MenuList extends React.Component {
                   <thead className="text-primary">
                     <tr className="menu-table-heading">
                       <th><input type="checkbox" id="checkAll" onClick={this.allCheck} /> </th>
-                      <th>Name<span>^</span> </th>
-                      <th>Price</th>
-                      <th>Category</th>
+                      <th id="name" onClick={this.changeSort}>Name<span>^</span> </th>
+                      <th id="price" onClick={this.changeSort}>Price</th>
+                      <th id="category" onClick={this.changeSort}>Category</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredMenu &&
-                      filteredMenu.filter(this.filterByCategory).filter(this.filterMenu).map(menu => {
+                      filteredMenu.filter(this.filterByCategory).filter(this.filterMenu).sort(this.sortBy).map(menu => {
                         return (
                           <tr key={menu.id}>
                             <td>
