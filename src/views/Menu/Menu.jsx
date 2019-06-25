@@ -16,17 +16,16 @@ import { compose } from "redux";
 import { NavLink } from "react-router-dom";
 import "./Menu.css";
 class MenuList extends React.Component {
+
   state = {
     search: ""
   };
-  flag = 1;
+
+  flag = 0;
   filterMenu = menu => {
-    var name = menu.name
-      .toUpperCase()
-      .includes(this.state.search.toUpperCase());
-    var category = menu.category
-      .toUpperCase()
-      .includes(this.state.search.toUpperCase());
+    var name = menu.name.toUpperCase().includes(this.state.search.toUpperCase());
+    var category = menu.category.toUpperCase().includes(this.state.search.toUpperCase());
+
     var searchResult = document.getElementById("searchResult");
     var table = document.getElementById("table");
 
@@ -37,12 +36,14 @@ class MenuList extends React.Component {
     } else if (searchResult) {
       searchResult.style.display = "none";
       table.style.display = "table";
-      this.flag = 0;
+      this.flag = 0;    // at found, make found to 0
     }
 
     return name || category;
   };
+
   searchMenu = e => {
+    this.flag = 1;  // everytime we type, flag will be 1
     this.setState({
       [e.target.id]: e.target.value
     });
@@ -52,7 +53,7 @@ class MenuList extends React.Component {
     const { menuList } = this.props;
     var checkBox = document.getElementById("checkAll");
 
-    menuList.map(menu => {
+    menuList.forEach(menu => {
       var text = document.getElementById(menu.id);
       if (text) {
         if (checkBox.checked) {
@@ -63,6 +64,7 @@ class MenuList extends React.Component {
       }
     });
   };
+  
   render() {
     const { menuList } = this.props;
 
@@ -80,11 +82,7 @@ class MenuList extends React.Component {
               </div>
               <div className="ml-auto">
                 <Button color="dark">
-                  <NavLink
-                    to="/dashboard/menu/items"
-                    className="nav-link table-link"
-                    activeClassName="active"
-                  >
+                  <NavLink to="/dashboard/menu/items" className="nav-link table-link" activeClassName="active">
                     <p>Add Item</p>
                   </NavLink>
                 </Button>
@@ -96,51 +94,27 @@ class MenuList extends React.Component {
                 <div className="input-group mt-3 mb-3">
                   <div className="input-group-prepend">
                     <Dropdown>
-                      <Dropdown.Toggle
-                        variant="success"
-                        id="dropdown-basic"
-                        className="search-button-right"
-                      >
+                      <Dropdown.Toggle variant="success" id="dropdown-basic" className="search-button-right">
                         Filter
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {/* map all category */}
                         <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">
-                          Another action
-                        </Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">
-                          Something else
-                        </Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>
-                  <input
-                    type="text"
-                    id="search"
-                    className="form-control"
-                    placeholder="Search menu"
-                    onChange={this.searchMenu}
-                  />
+                  <input type="text" id="search" className="form-control" placeholder="Search menu" onChange={this.searchMenu} />
                 </div>
               </CardHeader>
               <CardBody className="menu-table-body">
-                <div id="searchResult" className="display-none">
-                  test
-                </div>
+                <div id="searchResult" className="display-none"> test </div>
                 <Table responsive id="table">
                   <thead className="text-primary">
                     <tr className="menu-table-heading">
-                      <th>
-                        <input
-                          type="checkbox"
-                          id="checkAll"
-                          onClick={this.allCheck}
-                        />
-                      </th>
-                      <th>
-                        Name<span>^</span>
-                      </th>
+                      <th><input type="checkbox" id="checkAll" onClick={this.allCheck} /> </th>
+                      <th>Name<span>^</span> </th>
                       <th>Price</th>
                       <th>Category</th>
                     </tr>
@@ -170,26 +144,5 @@ class MenuList extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  const id = state.firebase.auth.uid;
-  return {
-    menuList:
-      state.firestore.ordered.company &&
-      state.firestore.ordered.company[0].menu,
-    id
-  };
-};
 
-export default compose(
-  connect(mapStateToProps),
-  firestoreConnect(props => {
-    console.log(props);
-    return [
-      {
-        collection: "company",
-        doc: props.id,
-        subcollections: [{ collection: "menu" }]
-      }
-    ];
-  })
-)(MenuList);
+export default connect()(MenuList);

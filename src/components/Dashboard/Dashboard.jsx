@@ -17,7 +17,7 @@ class Dashboard extends React.Component {
   state = {};
 
   render() {
-    const { isLoaded } = this.props;
+    const { isLoaded, name, menu, category } = this.props;
     if (isLoaded) {
       return (
         <div className="wrapper">
@@ -26,17 +26,18 @@ class Dashboard extends React.Component {
             <Header />
             <div className="dashboard-content ">
               <Switch>
-                <Route
-                  path="/dashboard/typography"
-                  component={TypographyView}
+                <Route path="/dashboard/typography" component={TypographyView} />
+                <Route 
+                  path="/dashboard/menu/list" 
+                  render={props => <MenuView {...props} menuList={ menu } />}
                 />
-                <Route path="/dashboard/menu/list" component={MenuView} />
-                <Route path="/dashboard/menu/items" component={ItemsView} />
+                <Route 
+                  path="/dashboard/menu/items" 
+                  render={props => <ItemsView {...props} categories={ category } />}
+                />
                 <Route
                   path="/dashboard"
-                  render={props => (
-                    <DashboardView {...props} data={this.props.name} />
-                  )}
+                  render={(props) => <DashboardView {...props} name={ name } />}
                 />
               </Switch>
             </div>
@@ -49,14 +50,35 @@ class Dashboard extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const id = state.firebase.auth.uid;
+  const auth = state.firebase.auth;
+  const store = state.firestore.ordered;
   return {
-    isLoaded: state.firebase.auth.isLoaded,
-    name: state.firestore.data.company && state.firestore.data.company[id].name
+    isLoaded: auth.isLoaded,
+    id: auth.uid,
+    name: store.company && store.company[0].name,
+    menu: store.company && store.company[0].menu,
+    category: store.company && store.company[0].category,
   };
 };
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect([{ collection: "company" }])
+  firestoreConnect(props => {
+    return props.id ? [
+      {
+        collection: "company",
+        doc: props.id
+      },
+      {
+        collection: "company",
+        doc: props.id,
+        subcollections: [{ collection: "menu" }]
+      },
+      {
+        collection: "company",
+        doc: props.id,
+        subcollections: [{ collection: "category" }]
+      }
+    ] : [];
+  })
 )(Dashboard);

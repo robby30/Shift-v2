@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
+import { FormControl } from "react-bootstrap"
 import { addMenuItem, formReset } from "../../actions/menuActions";
 
 class Items extends Component {
@@ -25,8 +26,15 @@ class Items extends Component {
     });
   };
 
+  handleOptionChange = e => {
+    console.log(e.target.id)
+    this.setState({
+      category: e.target.value
+    })
+  }
+
   render() {
-    const { addMenu } = this.props;
+    const { addMenu, categories } = this.props;
     if (addMenu) {
       this.setState({
         name: "",
@@ -68,13 +76,17 @@ class Items extends Component {
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Category</Form.Label>
-                  <Form.Control
+                  <FormControl
                     id="category"
+                    as="select" 
+                    placeholder="select"
                     onChange={this.handleChange}
-                    type="text"
-                    value={this.state.category}
-                    placeholder="Enter Category"
-                  />
+                    defaultValue={-1}>
+                      <option value={-1} disabled>Select categories</option>
+                      {categories && categories.map((category, index) => {
+                        return (<option key={index} value={index}>{category.name}</option>)
+                      })}
+                  </FormControl>
                 </Form.Group>
                 <Button variant="success" onClick={this.handleSubmit}>
                   Submit

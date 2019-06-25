@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 class Dashboard extends Component {
   render() {
-    const name = this.props.data && this.props.data;
+    const { name } = this.props;
     if (!name) {
       return (
         //loading
