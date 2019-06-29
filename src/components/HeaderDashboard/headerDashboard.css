@@ -12,9 +12,13 @@
 }
 
 .nav-open .main-panel {
-  right: 0;
-  -webkit-transform: translate3d(260px, 0, 0);
-  transform: translate3d(260px, 0, 0);
+}
+.header-icon .nav-link {
+  display: inline-block;
+  padding: 0;
+}
+.navbar-toggler {
+  display: inline-block;
 }
 
 .dashboard-header {
@@ -23,7 +27,7 @@
 
 @media screen and (min-width: 991px) {
   .navbar-toggler {
-    display: none;
+    display: inline-block;
   }
   .nav-open .main-panel {
     width: 100%;

@@ -5,3 +5,16 @@
 .main-panel {
   height: 100%;
 }
+
+.main-dashboard > div {
+  padding:0;
+
+}
+
+.main-content-open{
+  margin-left:212px;
+}
+
+.main-content-closed{
+  margin-left:66px;
+}

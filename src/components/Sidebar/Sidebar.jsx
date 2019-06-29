@@ -17,8 +17,8 @@ class Sidebar extends React.Component {
 
   render() {
     return (
-      <div className="sidebar">
-        <div className="logo">
+      <nav className="sidebar">
+        {/* <div className="logo">
           <a href="/" className="logo-small">
             <div className="logo-img">
               <img src={logo} alt="react-logo" />
@@ -27,10 +27,10 @@ class Sidebar extends React.Component {
           <a href="/" className="logo-normal">
             <h4>Shift</h4>
           </a>
-        </div>
+        </div> */}
         <div className="sidebar-wrapper" ref="sidebar">
           <Row>
-            <Col sm={4} className="mr-0 pr-0">
+            <Col sm={4} className="mx-0 px-0">
               <Nav vertical>
                 <li className={this.activeRoute("/dashboard")}>
                   <NavLink
@@ -68,7 +68,7 @@ class Sidebar extends React.Component {
                 </li> */}
               </Nav>
             </Col>
-            <Col sm={8} className="ml-0 pl-0">
+            <Col sm={8} className="ml-0 pl-0" id="sidebar-title">
               <Nav vertical>
                 <li className={this.activeRoute("/dashboard")}>
                   <NavLink
@@ -107,8 +107,26 @@ class Sidebar extends React.Component {
                           <p>Items</p>
                         </NavLink>
                       </li>
+                      <li>
+                        <NavLink
+                          to="/dashboard/menu/category"
+                          className="nav-link sub-items"
+                          activeClassName="active"
+                        >
+                          <p>Category</p>
+                        </NavLink>
+                      </li>
                     </ul>
                   </div>
+                </li>
+                <li className={this.activeRoute("/orders")}>
+                  <NavLink
+                    to="/dashboard/orders"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    <p>Orders</p>
+                  </NavLink>
                 </li>
                 <li className={this.activeRoute("/typography")}>
                   <NavLink
@@ -123,7 +141,7 @@ class Sidebar extends React.Component {
             </Col>
           </Row>
         </div>
-      </div>
+      </nav>
     );
   }
 }

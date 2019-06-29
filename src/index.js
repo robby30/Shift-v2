@@ -23,7 +23,8 @@ import {
   faBell,
   faBars,
   faCog,
-  faUsersCog
+  faUsersCog,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -33,7 +34,8 @@ library.add(
   faBell,
   faBars,
   faCog,
-  faUsersCog
+  faUsersCog,
+  faTrash
 );
 const hist = createBrowserHistory();
 const store = configureStore();

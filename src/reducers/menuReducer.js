@@ -1,5 +1,6 @@
 const initState = {
-  addMenu: null
+  addMenu: null,
+  deleteMenu: null
 };
 
 const menuReducer = (state = initState, action) => {
@@ -13,6 +14,16 @@ const menuReducer = (state = initState, action) => {
       return {
         ...state,
         addMenu: false
+      };
+    case "DELETE_MENU_SUCCESS":
+      return {
+        ...state,
+        deleteMenu: true
+      };
+    case "DELETE_MENU_FAILED":
+      return {
+        ...state,
+        deleteMenu: false
       };
     case "FORM_RESET":
       return {

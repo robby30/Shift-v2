@@ -6,32 +6,48 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import { FormControl } from "react-bootstrap";
-import { addMenuItem, formReset } from "../../actions/menuActions";
+import {
+  updateMenuItem,
+  formReset,
+  deleteMenuItem
+} from "../../actions/menuActions";
 
 class Items extends Component {
-  state = {
-    name: "",
-    price: "",
-    category: "",
-    file: null
-  };
+  pos =
+    this.props.menuList &&
+    this.props.menuList
+      .map(function(e) {
+        return e.id;
+      })
+      .indexOf(this.props.match.params.id);
 
-  uploadFileHandler = event => {
-    let reader = new FileReader();
-    let file = event.target.files[0];
-    reader.onloadend = () => {
-      this.setState({
-        file: file
-      });
-    };
-    reader.readAsDataURL(file);
+  menu = this.props.menuList && this.props.menuList[this.pos];
+
+  posCat =
+    this.props.categoryList &&
+    this.props.categoryList
+      .map(function(e) {
+        return e.name;
+      })
+      .indexOf(this.props.menuList[this.pos].category);
+
+  state = {
+    name: this.menu && this.menu.name,
+    price: this.menu && this.menu.price,
+    category: this.menu && this.menu.category,
+    file: ""
   };
 
   handleSubmit = e => {
-    this.props.addMenuItem(this.state, this.props.uid);
+    this.props.updateMenuItem(
+      this.state,
+      this.props.uid,
+      this.props.match.params.id
+    );
   };
 
   handleChange = e => {
+    this.posCat = e.target.value;
     this.setState({
       [e.target.id]: e.target.value
     });
@@ -44,8 +60,15 @@ class Items extends Component {
     });
   };
 
+  deleteItemHandler = menuId => {
+    this.props.deleteMenuItem(this.props.uid, menuId);
+  };
+
+  // shouldComponentUpdate(nextProps) {
+  //   return false;
+  // }
   render() {
-    const { addMenu, categories } = this.props;
+    const { addMenu, categoryList, menuList } = this.props;
     if (addMenu) {
       this.setState({
         name: "",
@@ -55,8 +78,36 @@ class Items extends Component {
       });
       this.props.resetForm();
     }
+    console.log(this.props.menuList, "l");
+    const pos =
+      menuList &&
+      menuList
+        .map(function(e) {
+          return e.id;
+        })
+        .indexOf(this.props.match.params.id);
+    console.log(pos, "pos");
+
+    const menu = menuList && menuList[pos];
+    const posCat =
+      categoryList &&
+      categoryList
+        .map(function(e) {
+          return e.name;
+        })
+        .indexOf(menuList[pos].category);
+    console.log(posCat, "t");
+    console.log(categoryList && categoryList[posCat], "sfsd");
     return (
       <Col xs="10" className="mx-auto py-5">
+        <Button
+          color="dark"
+          onClick={() => {
+            this.deleteItemHandler(menu.id);
+          }}
+        >
+          <p>Yes</p>
+        </Button>
         <Card>
           <Form className="py-5 px-5">
             <Row>
@@ -92,15 +143,16 @@ class Items extends Component {
                     as="select"
                     placeholder="select"
                     onChange={this.handleChange}
-                    defaultValue={-1}
+                    defaultValue={categoryList && categoryList[posCat].name}
                   >
                     <option value={-1} disabled>
                       Select categories
                     </option>
-                    {categories &&
-                      categories.map((category, index) => {
+                    {categoryList &&
+                      categoryList.map((category, index) => {
+                        console.log(category.name, index);
                         return (
-                          <option key={index} value={category.name}>
+                          <option key={category.name} value={category.name}>
                             {category.name}
                           </option>
                         );
@@ -114,11 +166,7 @@ class Items extends Component {
               <Col xs="6">
                 <Form.Group>
                   <Form.Label>Image</Form.Label>
-                  <Form.Control
-                    type="file"
-                    placeholder="Insert Image"
-                    onChange={this.uploadFileHandler}
-                  />
+                  <Form.Control type="file" placeholder="Insert Image" />
                 </Form.Group>
               </Col>
             </Row>
@@ -138,8 +186,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addMenuItem: (menu, uid) => dispatch(addMenuItem(menu, uid)),
-    resetForm: () => dispatch(formReset())
+    updateMenuItem: (menu, uid, menuId) =>
+      dispatch(updateMenuItem(menu, uid, menuId)),
+    resetForm: () => dispatch(formReset()),
+    deleteMenuItem: (id, menuId) => dispatch(deleteMenuItem(id, menuId))
   };
 };
 

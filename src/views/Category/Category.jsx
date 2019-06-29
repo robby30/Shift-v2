@@ -1,4 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Form from "react-bootstrap/Form";
+import { FormControl, Dropdown } from "react-bootstrap";
+import { addMenuItem, formReset } from "../../actions/menuActions";
+import Popup from "reactjs-popup";
 import {
   Card,
   CardBody,
@@ -9,20 +14,19 @@ import {
   Col,
   Button
 } from "reactstrap";
-import { Dropdown } from "react-bootstrap";
-import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-import "./Menu.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Popup from "reactjs-popup";
-import { deleteMenuItem, formReset } from "../../actions/menuActions";
-
-class MenuList extends React.Component {
+class Items extends Component {
   state = {
+    name: "",
+    description: "",
     search: "",
     categoryFilter: null,
     sortBy: null,
-    hasError: false
+    hasError: false,
+    selectedItems: [
+      { id: "s", name: "s", category: "d", price: "6", file: "ds" }
+    ]
   };
 
   flag = 0;
@@ -78,7 +82,6 @@ class MenuList extends React.Component {
     if (this.state.categoryFilter) {
       return menu.category === this.state.categoryFilter;
     } else {
-      console.log(menu, "aa");
       return menu;
     }
   };
@@ -111,55 +114,97 @@ class MenuList extends React.Component {
     });
   };
 
-  deleteItemHandler = menuId => {
-    this.props.deleteMenuItem(this.props.uid, menuId);
-    console.log(this.props, "lmlml");
+  handleSubmit = e => {
+    this.props.addMenuItem(this.state, this.props.uid);
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.menuList !== this.props.menuList) {
-      console.log("test");
-      console.log(this.props, "current");
-      console.log(nextProps, "next");
-    }
-  }
+  addToCategoryHandler = () => {
+    const { menuList } = this.props;
+    var temp = [];
+    menuList.forEach(menu => {
+      var text = document.getElementById(menu.id);
+      if (text) {
+        if (text.checked) {
+          temp.push(menu);
+        }
+      }
+    });
+    this.setState({
+      selectedItems: this.state.selectedItems.concat(temp)
+    });
+  };
 
-  // shouldComponentUpdate(nextProps) {
-  //   console.log(this.props.deleteMenu, "here");
-  //   return true;
-  // }
+  handleChange = e => {
+    this.setState({
+      [e.target.id]: e.target.value
+    });
+  };
 
   render() {
-    const { menuList, categoryList, deleteMenu } = this.props;
-    // if (deleteMenu) {
-    //   this.setState({ search: "" });
-    // }
+    const { addMenu } = this.props;
+    if (addMenu) {
+      this.setState({
+        name: "",
+        description: ""
+      });
+      this.props.resetForm();
+    }
+    const { menuList, categoryList } = this.props;
     let filteredMenu = menuList && [...menuList];
-    //this.setState({ sortedMenu: filteredMenu });
-    //console.log(this.state.search);
-    console.log(this.state.menuList);
+    console.log(this.state.selectedItems);
+    let selectedItems = [...this.state.selectedItems];
+    console.log(filteredMenu);
     return (
-      <div className="content">
-        <Row>
-          <Col xs={11} sm={11} className="mx-auto my-4">
+      <Col xs="10" className="mx-auto py-5">
+        <Card className="my-5">
+          <Form className="py-5 px-5">
             <Row>
-              <div>
-                <h4>Menu</h4>
-              </div>
-              <div className="ml-auto">
-                <Button color="dark">
-                  <NavLink
-                    to="/dashboard/menu/items"
-                    className="nav-link table-link"
-                    activeClassName="active"
-                  >
-                    <p>Add Item</p>
-                  </NavLink>
-                </Button>
-              </div>
-            </Row>
+              <Col xs="6">
+                <Form.Group>
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    id="name"
+                    onChange={this.handleChange}
+                    type="text"
+                    value={this.state.name}
+                    placeholder="Enter Category Name"
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    id="description"
+                    onChange={this.handleChange}
+                    type="text"
+                    value={this.state.description}
+                    placeholder="Enter description"
+                  />
+                </Form.Group>
 
+                <Button variant="success" onClick={this.handleSubmit}>
+                  Submit
+                </Button>
+              </Col>
+              <Col xs="6">
+                <Form.Group>
+                  <Form.Label>Image</Form.Label>
+                  <Form.Control type="file" placeholder="Insert Image" />
+                </Form.Group>
+              </Col>
+            </Row>
+          </Form>
+        </Card>
+
+        <Card className="my-5">
+          <Popup
+            trigger={<button className="button"> Open Modal </button>}
+            modal
+            closeOnDocumentClick
+          >
             <Card className="menu-table my-4">
+              <Button color="dark" onClick={this.addToCategoryHandler}>
+                <p>Add Item</p>
+              </Button>
               <CardHeader>
                 <div className="input-group mt-3 mb-3">
                   <div className="input-group-prepend">
@@ -254,33 +299,6 @@ class MenuList extends React.Component {
                               </td>
                               <td>${menu.price}</td>
                               <td>{menu.category}</td>
-                              <td>
-                                <Popup
-                                  trigger={<FontAwesomeIcon icon="trash" />}
-                                  modal
-                                  closeOnDocumentClick
-                                >
-                                  {close => (
-                                    <div>
-                                      <h1>
-                                        Are you sure you want to delete{" "}
-                                        {menu.name}?
-                                      </h1>
-                                      <Button
-                                        color="dark"
-                                        onClick={() => {
-                                          this.deleteItemHandler(menu.id);
-                                        }}
-                                      >
-                                        <p>Yes</p>
-                                      </Button>
-                                      <Button color="dark">
-                                        <p>No</p>
-                                      </Button>
-                                    </div>
-                                  )}
-                                </Popup>
-                              </td>
                             </tr>
                           );
                         })}
@@ -288,25 +306,75 @@ class MenuList extends React.Component {
                 </Table>
               </CardBody>
             </Card>
-          </Col>
-        </Row>
-      </div>
+          </Popup>
+          <Form className="py-5 px-5">
+            <Card className="menu-table my-4">
+              <CardBody className="menu-table-body">
+                <div id="searchResult" className="display-none">
+                  {" "}
+                  test{" "}
+                </div>
+                <Table responsive id="table">
+                  <thead className="text-primary">
+                    <tr className="menu-table-heading">
+                      <th>
+                        <input type="checkbox" id="checkAll" />{" "}
+                      </th>
+                      <th>Name </th>
+                      <th>Price</th>
+                      <th>Category</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectedItems &&
+                      selectedItems.map(menu => {
+                        return (
+                          <tr key={menu.id}>
+                            <td>
+                              <input type="checkbox" id={menu.id} />
+                            </td>
+                            <td>
+                              <img
+                                src={menu.file}
+                                alt={menu.name}
+                                height="
+                                  30px"
+                              />
+                              <NavLink to={`list/${menu.id}`}>
+                                {menu.name}
+                              </NavLink>
+                            </td>
+                            <td>${menu.price}</td>
+                            <td>{menu.category}</td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </Table>
+              </CardBody>
+            </Card>
+          </Form>
+        </Card>
+      </Col>
     );
   }
 }
+
 const mapStateToProps = state => {
-  console.log(state.menu);
   return {
     uid: state.firebase.auth.uid,
-    deleteMenu: state.menu.deleteMenu
+    addMenu: state.menu.addMenu
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
-    deleteMenuItem: (id, menuId) => dispatch(deleteMenuItem(id, menuId))
+    addMenuItem: (menu, uid) => dispatch(addMenuItem(menu, uid)),
+    resetForm: () => dispatch(formReset())
   };
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MenuList);
+)(Items);

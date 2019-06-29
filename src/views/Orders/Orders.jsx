@@ -12,17 +12,18 @@ import {
 import { Dropdown } from "react-bootstrap";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-import "./Menu.css";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Popup from "reactjs-popup";
 import { deleteMenuItem, formReset } from "../../actions/menuActions";
 
-class MenuList extends React.Component {
+import "./orders.css";
+
+class Orders extends React.Component {
   state = {
     search: "",
     categoryFilter: null,
-    sortBy: null,
-    hasError: false
+    sortBy: null
   };
 
   flag = 0;
@@ -78,7 +79,6 @@ class MenuList extends React.Component {
     if (this.state.categoryFilter) {
       return menu.category === this.state.categoryFilter;
     } else {
-      console.log(menu, "aa");
       return menu;
     }
   };
@@ -91,16 +91,16 @@ class MenuList extends React.Component {
 
   sortBy = (a, b) => {
     if (this.state.sortBy === "category") {
-      if (a.category.toUpperCase() < b.category.toUpperCase()) return -1;
-      if (a.category.toUpperCase() > b.category.toUpperCase()) return 1;
+      if (a.category < b.category) return -1;
+      if (a.category > b.category) return 1;
       return 0;
     } else if (this.state.sortBy === "price") {
       if (parseFloat(a.price) < parseFloat(b.price)) return -1;
       if (parseFloat(a.price) > parseFloat(b.price)) return 1;
       return 0;
     } else {
-      if (a.name.toUpperCase() < b.name.toUpperCase()) return -1;
-      if (a.name.toUpperCase() > b.name.toUpperCase()) return 1;
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
       return 0;
     }
   };
@@ -113,31 +113,15 @@ class MenuList extends React.Component {
 
   deleteItemHandler = menuId => {
     this.props.deleteMenuItem(this.props.uid, menuId);
-    console.log(this.props, "lmlml");
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.menuList !== this.props.menuList) {
-      console.log("test");
-      console.log(this.props, "current");
-      console.log(nextProps, "next");
-    }
-  }
-
-  // shouldComponentUpdate(nextProps) {
-  //   console.log(this.props.deleteMenu, "here");
-  //   return true;
-  // }
-
   render() {
-    const { menuList, categoryList, deleteMenu } = this.props;
-    // if (deleteMenu) {
-    //   this.setState({ search: "" });
-    // }
+    const { menuList, categoryList } = this.props;
     let filteredMenu = menuList && [...menuList];
     //this.setState({ sortedMenu: filteredMenu });
     //console.log(this.state.search);
     console.log(this.state.menuList);
+    console.log(filteredMenu);
     return (
       <div className="content">
         <Row>
@@ -218,14 +202,21 @@ class MenuList extends React.Component {
                           onClick={this.allCheck}
                         />{" "}
                       </th>
+                      <th id="orderID" onClick={this.changeSort}>
+                        Order Number<span>^</span>{" "}
+                      </th>
                       <th id="name" onClick={this.changeSort}>
                         Name<span>^</span>{" "}
                       </th>
                       <th id="price" onClick={this.changeSort}>
                         Price
                       </th>
+
                       <th id="category" onClick={this.changeSort}>
                         Category
+                      </th>
+                      <th id="date" onClick={this.changeSort}>
+                        Date
                       </th>
                     </tr>
                   </thead>
@@ -241,46 +232,15 @@ class MenuList extends React.Component {
                               <td>
                                 <input type="checkbox" id={menu.id} />
                               </td>
+                              <td>{menu.id}</td>
                               <td>
-                                <img
-                                  src={menu.file}
-                                  alt={menu.name}
-                                  height="
-                                  30px"
-                                />
                                 <NavLink to={`list/${menu.id}`}>
                                   {menu.name}
                                 </NavLink>
                               </td>
-                              <td>${menu.price}</td>
+                              <td>{menu.price}</td>
                               <td>{menu.category}</td>
-                              <td>
-                                <Popup
-                                  trigger={<FontAwesomeIcon icon="trash" />}
-                                  modal
-                                  closeOnDocumentClick
-                                >
-                                  {close => (
-                                    <div>
-                                      <h1>
-                                        Are you sure you want to delete{" "}
-                                        {menu.name}?
-                                      </h1>
-                                      <Button
-                                        color="dark"
-                                        onClick={() => {
-                                          this.deleteItemHandler(menu.id);
-                                        }}
-                                      >
-                                        <p>Yes</p>
-                                      </Button>
-                                      <Button color="dark">
-                                        <p>No</p>
-                                      </Button>
-                                    </div>
-                                  )}
-                                </Popup>
-                              </td>
+                              <td>00:00:00</td>
                             </tr>
                           );
                         })}
@@ -295,10 +255,8 @@ class MenuList extends React.Component {
   }
 }
 const mapStateToProps = state => {
-  console.log(state.menu);
   return {
-    uid: state.firebase.auth.uid,
-    deleteMenu: state.menu.deleteMenu
+    uid: state.firebase.auth.uid
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -309,4 +267,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MenuList);
+)(Orders);

@@ -9,9 +9,14 @@ import DashboardView from "../../views/Dashboard/Dashboard.jsx";
 import Header from "../HeaderDashboard/HeaderDashboard";
 import MenuView from "../../views/Menu/Menu.jsx";
 import ItemsView from "../../views/Items/Items.jsx";
+import MenuDetailView from "../../views/MenuDetail/MenuDetail.jsx";
+import CategoryView from "../../views/Category/Category.jsx";
+import OrdersView from "../../views/Orders/Orders.jsx";
+import AccountView from "../../views/Account/AccountSettings.jsx";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+import { Row, Col } from "react-bootstrap";
 import "./dashboard.css";
 class Dashboard extends React.Component {
   state = {};
@@ -21,25 +26,76 @@ class Dashboard extends React.Component {
     if (isLoaded) {
       return (
         <div className="wrapper">
-          <Sidebar {...this.props} />
           <div className="main-panel" ref="mainPanel">
             <Header />
-            <div className="dashboard-content ">
-              <Switch>
-                <Route path="/dashboard/typography" component={TypographyView} />
-                <Route 
-                  path="/dashboard/menu/list" 
-                  render={props => <MenuView {...props} menuList={ menu } categoryList={ category }/>}
-                />
-                <Route 
-                  path="/dashboard/menu/items" 
-                  render={props => <ItemsView {...props} categories={ category } />}
-                />
-                <Route
-                  path="/dashboard"
-                  render={(props) => <DashboardView {...props} name={ name } />}
-                />
-              </Switch>
+            <div className="wrapper dashboard-content">
+              <Sidebar {...this.props} />
+
+              <div id="main-content-toggler" className="main-content-open">
+                <Switch>
+                  <Route
+                    path="/dashboard/typography"
+                    component={TypographyView}
+                  />
+                  <Route
+                    path="/dashboard/account-settings"
+                    render={props => <AccountView {...props} name={name} />}
+                  />
+
+                  <Route
+                    path="/dashboard/menu/list/:id"
+                    render={props => (
+                      <MenuDetailView
+                        {...props}
+                        menuList={menu}
+                        categoryList={category}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/dashboard/menu/list"
+                    render={props => (
+                      <MenuView
+                        {...props}
+                        menuList={menu}
+                        categoryList={category}
+                      />
+                    )}
+                  />
+
+                  <Route
+                    path="/dashboard/menu/items"
+                    render={props => (
+                      <ItemsView {...props} categories={category} />
+                    )}
+                  />
+                  <Route
+                    path="/dashboard/menu/category"
+                    render={props => (
+                      <CategoryView
+                        {...props}
+                        menuList={menu}
+                        categoryList={category}
+                      />
+                    )}
+                  />
+
+                  <Route
+                    path="/dashboard/orders"
+                    render={props => (
+                      <OrdersView
+                        {...props}
+                        menuList={menu}
+                        categoryList={category}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/dashboard"
+                    render={props => <DashboardView {...props} name={name} />}
+                  />
+                </Switch>
+              </div>
             </div>
           </div>
         </div>
@@ -52,6 +108,8 @@ class Dashboard extends React.Component {
 const mapStateToProps = state => {
   const auth = state.firebase.auth;
   const store = state.firestore.ordered;
+  console.log(store.company && store.company[0].menu, "name");
+  console.log(store.company && store.company[0].category, "cate");
   return {
     isLoaded: auth.isLoaded,
     id: auth.uid,
@@ -64,21 +122,23 @@ const mapStateToProps = state => {
 export default compose(
   connect(mapStateToProps),
   firestoreConnect(props => {
-    return props.id ? [
-      {
-        collection: "company",
-        doc: props.id
-      },
-      {
-        collection: "company",
-        doc: props.id,
-        subcollections: [{ collection: "menu" }]
-      },
-      {
-        collection: "company",
-        doc: props.id,
-        subcollections: [{ collection: "category" }]
-      }
-    ] : [];
+    return props.id
+      ? [
+          {
+            collection: "company",
+            doc: props.id
+          },
+          {
+            collection: "company",
+            doc: props.id,
+            subcollections: [{ collection: "menu" }]
+          },
+          {
+            collection: "company",
+            doc: props.id,
+            subcollections: [{ collection: "category" }]
+          }
+        ]
+      : [];
   })
 )(Dashboard);
