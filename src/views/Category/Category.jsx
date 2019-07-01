@@ -17,6 +17,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 class Items extends Component {
+  
   state = {
     name: "",
     description: "",
@@ -374,7 +375,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Items);
+export default connect(mapStateToProps, mapDispatchToProps)(Items);

@@ -9,11 +9,13 @@ import { FormControl } from "react-bootstrap";
 import { addMenuItem, formReset } from "../../actions/menuActions";
 
 class Items extends Component {
+
   state = {
     name: "",
     price: "",
-    category: "",
-    file: null
+    category: -1,
+    file: null,
+    isLoading: false
   };
 
   uploadFileHandler = event => {
@@ -28,6 +30,9 @@ class Items extends Component {
   };
 
   handleSubmit = e => {
+    this.setState({
+      isLoading: true
+    });
     this.props.addMenuItem(this.state, this.props.uid);
   };
 
@@ -38,23 +43,27 @@ class Items extends Component {
   };
 
   handleOptionChange = e => {
-    console.log(e.target.id);
     this.setState({
       category: e.target.value
     });
   };
 
-  render() {
-    const { addMenu, categories } = this.props;
+  componentDidUpdate() {
+    const { addMenu, resetForm } = this.props
     if (addMenu) {
       this.setState({
         name: "",
         price: "",
-        category: "",
-        file: ""
+        category: -1,
+        file: "",
+        isLoading: false
       });
-      this.props.resetForm();
+      resetForm();
     }
+  }
+
+  render() {
+    const { categoryList } = this.props;
     return (
       <Col xs="10" className="mx-auto py-5">
         <Card>
@@ -63,42 +72,22 @@ class Items extends Component {
               <Col xs="6">
                 <Form.Group>
                   <Form.Label>Name</Form.Label>
-                  <Form.Control
-                    id="name"
-                    onChange={this.handleChange}
-                    type="text"
-                    value={this.state.name}
-                    placeholder="Enter Item Name"
-                  />
+                  <Form.Control id="name" type="text" value={this.state.name} placeholder="Enter Item Name" onChange={this.handleChange}  />
                 </Form.Group>
 
                 <Form.Group>
                   <Form.Label>Price</Form.Label>
-                  <Form.Control
-                    id="price"
-                    onChange={this.handleChange}
-                    type="number"
-                    value={this.state.price}
-                    placeholder="Enter Price"
-                  />
+                  <Form.Control  id="price" type="number" value={this.state.price} placeholder="Enter Price" onChange={this.handleChange} />
                   <Form.Text id="emailHelp" className="text-muted">
                     We'll never share your email with anyone else.
                   </Form.Text>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Category</Form.Label>
-                  <FormControl
-                    id="category"
-                    as="select"
-                    placeholder="select"
-                    onChange={this.handleChange}
-                    defaultValue={-1}
-                  >
-                    <option value={-1} disabled>
-                      Select categories
-                    </option>
-                    {categories &&
-                      categories.map((category, index) => {
+                  <FormControl id="category" as="select" placeholder="select" onChange={this.handleChange} value={this.state.category}>
+                    <option value={-1} disabled> Select categories </option>
+                    {categoryList &&
+                      categoryList.map((category, index) => {
                         return (
                           <option key={index} value={category.name}>
                             {category.name}
@@ -107,18 +96,18 @@ class Items extends Component {
                       })}
                   </FormControl>
                 </Form.Group>
-                <Button variant="success" onClick={this.handleSubmit}>
-                  Submit
+                <Button
+                  variant="success"
+                  disabled={this.state.isLoading}
+                  onClick={!this.state.isLoading ? this.handleSubmit : null}
+                >
+                  {this.state.isLoading ? 'Loading…' : 'Submit'}
                 </Button>
               </Col>
               <Col xs="6">
                 <Form.Group>
                   <Form.Label>Image</Form.Label>
-                  <Form.Control
-                    type="file"
-                    placeholder="Insert Image"
-                    onChange={this.uploadFileHandler}
-                  />
+                  <Form.Control type="file" placeholder="Insert Image" onChange={this.uploadFileHandler} />
                 </Form.Group>
               </Col>
             </Row>
@@ -143,7 +132,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Items);
+export default connect(mapStateToProps, mapDispatchToProps)(Items);

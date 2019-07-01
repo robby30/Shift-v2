@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Table,
-  Row,
-  Col,
-  Button
-} from "reactstrap";
+import { Card, CardBody, CardHeader, CardTitle, Table, Row,  Col, Button } from "reactstrap";
 import { Dropdown } from "react-bootstrap";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -18,6 +9,7 @@ import Popup from "reactjs-popup";
 import { deleteMenuItem, formReset } from "../../actions/menuActions";
 
 class MenuList extends React.Component {
+  
   state = {
     search: "",
     categoryFilter: null,
@@ -27,7 +19,7 @@ class MenuList extends React.Component {
 
   flag = 0;
   filterMenu = menu => {
-    console.log(menu, "t");
+    // console.log(menu, "t");
     var name = menu.name
       .toUpperCase()
       .includes(this.state.search.toUpperCase());
@@ -78,7 +70,6 @@ class MenuList extends React.Component {
     if (this.state.categoryFilter) {
       return menu.category === this.state.categoryFilter;
     } else {
-      console.log(menu, "aa");
       return menu;
     }
   };
@@ -112,22 +103,18 @@ class MenuList extends React.Component {
   };
 
   deleteItemHandler = menuId => {
-    this.props.deleteMenuItem(this.props.uid, menuId);
-    console.log(this.props, "lmlml");
-  };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.menuList !== this.props.menuList) {
-      console.log("test");
-      console.log(this.props, "current");
-      console.log(nextProps, "next");
+    if (menuId) {
+      this.props.deleteMenuItem(this.props.uid, menuId);
+    } else {    
+      this.props.menuList.forEach(menu => {
+      var text = document.getElementById(menu.id);
+      if (text.checked) {
+        // console.log(menu.id)
+        this.props.deleteMenuItem(this.props.uid, menu.id);
+      }
+    });
     }
-  }
-
-  // shouldComponentUpdate(nextProps) {
-  //   console.log(this.props.deleteMenu, "here");
-  //   return true;
-  // }
+  };
 
   render() {
     const { menuList, categoryList, deleteMenu } = this.props;
@@ -137,7 +124,7 @@ class MenuList extends React.Component {
     let filteredMenu = menuList && [...menuList];
     //this.setState({ sortedMenu: filteredMenu });
     //console.log(this.state.search);
-    console.log(this.state.menuList);
+    // console.log(this.state.menuList);
     return (
       <div className="content">
         <Row>
@@ -147,6 +134,8 @@ class MenuList extends React.Component {
                 <h4>Menu</h4>
               </div>
               <div className="ml-auto">
+                <Button className="mr-2" onClick={() => this.deleteItemHandler()}> Delete Item </Button>
+
                 <Button color="dark">
                   <NavLink
                     to="/dashboard/menu/items"
@@ -212,21 +201,11 @@ class MenuList extends React.Component {
                   <thead className="text-primary">
                     <tr className="menu-table-heading">
                       <th>
-                        <input
-                          type="checkbox"
-                          id="checkAll"
-                          onClick={this.allCheck}
-                        />{" "}
+                        <input type="checkbox" id="checkAll" onClick={this.allCheck} />{" "}
                       </th>
-                      <th id="name" onClick={this.changeSort}>
-                        Name<span>^</span>{" "}
-                      </th>
-                      <th id="price" onClick={this.changeSort}>
-                        Price
-                      </th>
-                      <th id="category" onClick={this.changeSort}>
-                        Category
-                      </th>
+                      <th id="name" onClick={this.changeSort}> Name<span>^</span>{" "} </th>
+                      <th id="price" onClick={this.changeSort}> Price </th>
+                      <th id="category" onClick={this.changeSort}> Category </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -242,12 +221,7 @@ class MenuList extends React.Component {
                                 <input type="checkbox" id={menu.id} />
                               </td>
                               <td>
-                                <img
-                                  src={menu.file}
-                                  alt={menu.name}
-                                  height="
-                                  30px"
-                                />
+                                {/* <img src={menu.file} alt={menu.name} height="30px"/> */}
                                 <NavLink to={`list/${menu.id}`}>
                                   {menu.name}
                                 </NavLink>
@@ -255,11 +229,7 @@ class MenuList extends React.Component {
                               <td>${menu.price}</td>
                               <td>{menu.category}</td>
                               <td>
-                                <Popup
-                                  trigger={<FontAwesomeIcon icon="trash" />}
-                                  modal
-                                  closeOnDocumentClick
-                                >
+                                <Popup trigger={<FontAwesomeIcon icon="trash" />} modal closeOnDocumentClick>
                                   {close => (
                                     <div>
                                       <h1>
@@ -270,8 +240,7 @@ class MenuList extends React.Component {
                                         color="dark"
                                         onClick={() => {
                                           this.deleteItemHandler(menu.id);
-                                        }}
-                                      >
+                                        }}>
                                         <p>Yes</p>
                                       </Button>
                                       <Button color="dark">
@@ -295,17 +264,19 @@ class MenuList extends React.Component {
   }
 }
 const mapStateToProps = state => {
-  console.log(state.menu);
+  // console.log(state.menu);
   return {
     uid: state.firebase.auth.uid,
     deleteMenu: state.menu.deleteMenu
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     deleteMenuItem: (id, menuId) => dispatch(deleteMenuItem(id, menuId))
   };
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

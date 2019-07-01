@@ -19,10 +19,9 @@ import { compose } from "redux";
 import { Row, Col } from "react-bootstrap";
 import "./dashboard.css";
 class Dashboard extends React.Component {
-  state = {};
 
   render() {
-    const { isLoaded, name, menu, category } = this.props;
+    const { isLoaded, name, menuList, menuObject, categoryList, categoryObject } = this.props;
     if (isLoaded) {
       return (
         <div className="wrapper">
@@ -33,67 +32,13 @@ class Dashboard extends React.Component {
 
               <div id="main-content-toggler" className="main-content-open">
                 <Switch>
-                  <Route
-                    path="/dashboard/typography"
-                    component={TypographyView}
-                  />
-                  <Route
-                    path="/dashboard/account-settings"
-                    render={props => <AccountView {...props} name={name} />}
-                  />
-
-                  <Route
-                    path="/dashboard/menu/list/:id"
-                    render={props => (
-                      <MenuDetailView
-                        {...props}
-                        menuList={menu}
-                        categoryList={category}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/dashboard/menu/list"
-                    render={props => (
-                      <MenuView
-                        {...props}
-                        menuList={menu}
-                        categoryList={category}
-                      />
-                    )}
-                  />
-
-                  <Route
-                    path="/dashboard/menu/items"
-                    render={props => (
-                      <ItemsView {...props} categories={category} />
-                    )}
-                  />
-                  <Route
-                    path="/dashboard/menu/category"
-                    render={props => (
-                      <CategoryView
-                        {...props}
-                        menuList={menu}
-                        categoryList={category}
-                      />
-                    )}
-                  />
-
-                  <Route
-                    path="/dashboard/orders"
-                    render={props => (
-                      <OrdersView
-                        {...props}
-                        menuList={menu}
-                        categoryList={category}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/dashboard"
-                    render={props => <DashboardView {...props} name={name} />}
-                  />
+                  <Route path="/dashboard/account-settings" render={props => (<AccountView    {...props} name={name} /> )} />
+                  <Route path="/dashboard/menu/list/:id"    render={props => (<MenuDetailView {...props} categoryList={categoryList} categoryObject={categoryObject} menuObject={menuObject} /> )} />
+                  <Route path="/dashboard/menu/list"        render={props => (<MenuView       {...props} categoryList={categoryList} menuList={menuList} /> )} />
+                  <Route path="/dashboard/menu/items"       render={props => (<ItemsView      {...props} categoryList={categoryList} /> )} />
+                  <Route path="/dashboard/menu/category"    render={props => (<CategoryView   {...props} categoryList={categoryList} menuList={menuList} /> )} />
+                  <Route path="/dashboard/orders"           render={props => (<OrdersView     {...props} categoryList={categoryList} menuList={menuList} /> )} />
+                  <Route path="/dashboard"                  render={props => (<DashboardView  {...props} name={name} /> )} />
                 </Switch>
               </div>
             </div>
@@ -105,17 +50,20 @@ class Dashboard extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const auth = state.firebase.auth;
-  const store = state.firestore.ordered;
-  console.log(store.company && store.company[0].menu, "name");
-  console.log(store.company && store.company[0].category, "cate");
+  const profile = state.firebase.profile;
+  const order_data = state.firestore.ordered;
+  const object_data = state.firestore.data;
+  // console.log(state.firestore.data.company_menu && state.firestore.data.company_menu.iONEcayI3q6YIL4FPr8R);
   return {
     isLoaded: auth.isLoaded,
     id: auth.uid,
-    name: store.company && store.company[0].name,
-    menu: store.company && store.company[0].menu,
-    category: store.company && store.company[0].category
+    name: profile.name,
+    menuList: order_data.company_menu,
+    menuObject: object_data.company_menu,
+    categoryList: order_data.company_category,
+    categoryObject: object_data.company_category,
   };
 };
 
@@ -131,12 +79,14 @@ export default compose(
           {
             collection: "company",
             doc: props.id,
-            subcollections: [{ collection: "menu" }]
+            subcollections: [{ collection: "menu" }],
+            storeAs: 'company_menu'
           },
           {
             collection: "company",
             doc: props.id,
-            subcollections: [{ collection: "category" }]
+            subcollections: [{ collection: "category" }],
+            storeAs: 'company_category'
           }
         ]
       : [];

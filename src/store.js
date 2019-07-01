@@ -13,7 +13,7 @@ function configureStore(state = {}) {
       reactReduxFirebase(
         fbConfig,
         {
-          userProfile: "users",
+          userProfile: "company",
           useFirestoreForProfile: true,
           attachAuthIsReady: true
         } /*, {userProfile: 'users', useFirestoreForProfile: true, attachAuthIsReady: true} */

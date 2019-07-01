@@ -75,20 +75,29 @@ export const updateCompanyDetails = (companyDetail, id) => {
 export const deleteMenuItem = (id, menuId) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-    firestore
-      .collection("company")
-      .doc(id)
-      .collection("menu")
-      .doc(menuId)
-      .delete()
+    // firestore
+    //   .collection("company")
+    //   .doc(id)
+    //   .collection("menu")
+    //   .doc(menuId)
+    //   .delete()
+    //   .then(() => {
+    //     console.log("in");
+    //     dispatch({ type: "DELETE_MENU_SUCCESS" });
+    //   })
+    //   .catch(() => {
+    //     dispatch({ type: "DELETE_MENU_FAILED" });
+    //   });
+    firestore.delete({ collection: 'company', doc: id, subcollections: [{ collection: "menu", doc: menuId }]})
       .then(() => {
         console.log("in");
         dispatch({ type: "DELETE_MENU_SUCCESS" });
       })
-      .catch(() => {
+      .catch(e => {
+        console.log(e);
         dispatch({ type: "DELETE_MENU_FAILED" });
       });
-  };
+    }
 };
 
 export const formReset = () => {

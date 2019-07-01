@@ -128,15 +128,6 @@ class Sidebar extends React.Component {
                     <p>Orders</p>
                   </NavLink>
                 </li>
-                <li className={this.activeRoute("/typography")}>
-                  <NavLink
-                    to="/dashboard/typography"
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    <p>Typography</p>
-                  </NavLink>
-                </li>
               </Nav>
             </Col>
           </Row>
